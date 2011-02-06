@@ -1,0 +1,19 @@
+Version 1.0.1
+   - Bug fix: Unable to get field type and field flag when table is empty. - January 17, 2010
+   - Added 'redirect' public method on controller.class.php and changed __layout to layout. - December 15, 2010
+   - Moved index.php to app/webroot/, modified .htaccess and environment config file. - December 11, 2010
+   - Added extensions/ (class autoload) and vendors/ directories. - December 11, 2010
+   - Moved config/ directory inside app/ and renamed libs/ directory to core/. - December 11, 2010
+
+Version 1.0.1
+   - Added default URL routing rules. - November 29, 2010
+
+Version 1.0.1
+   - Integrated the updated ORM classes (from the original Orinoco Framework's ORM: http://code.google.com/p/orinoco-framework/source/browse/#svn/trunk) - November 21, 2010
+   - Added .swf and .flv on .htaccess. - November 21, 2010
+
+Version 1.0.0 (August 25, 2010) - Start of 1.x.x (Twinkle Toes) branch
+   - Updated router.
+   - Removed unnecessary objects (e.g. class/object for $_POST, $_GET and $_SESSION).
+   - Streamlined Orinoco Framework source structure.
+   - Initial beta (Twinkle Toes) release.

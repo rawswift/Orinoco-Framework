@@ -1,0 +1,18 @@
+<?php
+/**
+ * Orinoco Framework - a lightweight MVC framework.
+ * http://code.google.com/p/orinoco-framework/
+ *  
+ * Copyright (c) 2008-2011 Ryan Yonzon, http://ryan.rawswift.com/
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ */
+
+define('DB_ADAPTER', 'mysql');
+define('DB_HOST', 'localhost');
+define('DB_USERNAME', 'your_username');
+define('DB_PASSWORD', 'your_password');
+define('DB_NAME', 'your_database_name');
+
+// -EOF-
