@@ -63,6 +63,17 @@ class Database {
 	}
 	
 	/**
+	 * check is field/column exists
+	 *
+	 * @param string $_model_name model name
+	 * @param string $_variable_name variable/property name
+	 * @return boolean
+	 */
+	protected function isExists($_model_name, $_variable_name) {
+		return $this->_database->isExists($_model_name, $_variable_name);
+	}	
+	
+	/**
 	 * get the ID generated in the last query
 	 *
 	 * @param None

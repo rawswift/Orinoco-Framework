@@ -74,6 +74,16 @@ class mysql implements databaseAdapter {
 		return false;
 	}
 	
+	// check if field/column exists
+	public function isExists($_model, $_field_name) {
+		$_cols = mysql_query('SHOW COLUMNS FROM ' . strtolower($_model) . ' WHERE Field = "' . $_field_name . '";');
+		$_cols_num_row = mysql_num_rows($_cols);
+		if($_cols_num_row != 0) {
+			return true;
+		}
+		return false;
+	}	
+	
 	// get the ID generated in the last query
 	public function getLastQueryID() {
 		return mysql_insert_id();
