@@ -97,61 +97,71 @@ class Record extends Database {
 		$_c = count($_properties) - 1;
 
 			foreach($_properties as $_k => $_v) {
-				if(isset($_v)) {
-					if(!$this->isAutoIncrement($_model_name, $_k)) {
-						$_field_type = $this->getFieldType($_model_name, $_k);
-						if($_field_type) {
-							$_fields = $_fields . $_k;
-							$_val = $this->escapeString($_v); // escape string
+				
+				if ($this->isExists($_model_name, $_k)) {
 					
-							switch($_field_type) {
-								case 'decimal':
-								case 'numeric': 
-								case 'date':
-								case 'datetime':
-								case 'timestamp': 
-								case 'time':
-								case 'year': 
-								case 'char': 
-								case 'varchar': 
-								case 'tinyblob':
-								case 'tinytext':
-								case 'blob':
-								case 'text':
-								case 'mediumblob':
-								case 'mediumtext':
-								case 'longblob':
-								case 'longtext':
-								//case 'enum': 
-								//case 'set':								
-									$_values = $_values . '"' . $_val . '"';
-									break;
-									
-								case 'tinyint':
-								case 'smallint':
-								case 'mediumint':
-								case 'int':
-								case 'integer':
-								case 'bigint':
-								case 'float':
-								case 'double':
-								case 'double precision':
-								case 'real':
-									$_values = $_values . $_val;
-									break;
-									
-								default:
-									break;
-							}
-							if ($_c > 0) {
-								$_fields = $_fields . ',';
-								$_values = $_values . ',';
-							}
-						}
-						$_c = $_c - 1;
-					}
-				}
-			}
+					if(isset($_v)) {
+						if(!$this->isAutoIncrement($_model_name, $_k)) {
+							$_field_type = $this->getFieldType($_model_name, $_k);
+							if($_field_type) {
+								$_fields = $_fields . $_k;
+								$_val = $this->escapeString($_v); // escape string
+						
+								switch($_field_type) {
+									case 'decimal':
+									case 'numeric': 
+									case 'date':
+									case 'datetime':
+									case 'timestamp': 
+									case 'time':
+									case 'year': 
+									case 'char': 
+									case 'varchar': 
+									case 'tinyblob':
+									case 'tinytext':
+									case 'blob':
+									case 'text':
+									case 'mediumblob':
+									case 'mediumtext':
+									case 'longblob':
+									case 'longtext':
+									case 'enum': 
+									//case 'set':								
+										$_values = $_values . '"' . $_val . '"';
+										break;
+										
+									case 'tinyint':
+									case 'smallint':
+									case 'mediumint':
+									case 'int':
+									case 'integer':
+									case 'bigint':
+									case 'float':
+									case 'double':
+									case 'double precision':
+									case 'real':
+										$_values = $_values . $_val;
+										break;
+										
+									default:
+										break;
+								} // end switch
+								
+								if ($_c > 0) {
+									$_fields = $_fields . ',';
+									$_values = $_values . ',';
+								}
+								
+							} // end check field_type
+							
+							$_c = $_c - 1;
+							
+						} // end isAutoIncrement
+					} // end isset					
+					
+				} // end isExists
+
+			} // end foreach
 
 		// construct SQL statement
 		$_sql = 'INSERT INTO ' . strtolower($_model_name);
@@ -343,63 +353,73 @@ class Record extends Database {
 		
 		$_c = count($_properties) - 1;
 			foreach($_properties as $_k => $_v) {
-				if(!($_k == 'id')) {
-					$_field_type = $this->getFieldType($_model_name, $_k);
-					if($_field_type) {
-						$_val = $this->escapeString($_v); // escape string
-						switch($_field_type) {
-							case 'decimal':
-							case 'numeric': 
-							case 'date':
-							case 'datetime':
-							case 'timestamp': 
-							case 'time':
-							case 'year': 
-							case 'char': 
-							case 'varchar': 
-							case 'tinyblob':
-							case 'tinytext':
-							case 'blob':
-							case 'text':
-							case 'mediumblob':
-							case 'mediumtext':
-							case 'longblob':
-							case 'longtext':
-							//case 'enum': 
-							//case 'set':								
-								if(isset($_v)) {
-									$_fields = $_fields . $_k . ' = "' . $_val . '"';
-								}
-								break;
-								
-							case 'tinyint':
-							case 'smallint':
-							case 'mediumint':
-							case 'int':
-							case 'integer':
-							case 'bigint':
-							case 'float':
-							case 'double':
-							case 'double precision':
-							case 'real':
-								if(isset($_v)) {					
-									$_fields = $_fields . $_k . ' = ' . $_val;
-								}
-								break;
-								
-							default:
-								if(isset($_v)) {					
-									$_fields = $_fields . $_k . ' = ' . $_val;
-								}
-								break;
-						}
-						if ($_c > 0) {
-							$_fields = $_fields . ',';
-						}
-					}
-				}
-				$_c = $_c - 1;
-			}
+
+				if ($this->isExists($_model_name, $_k)) {
+					
+					if(!($_k == 'id')) {
+						$_field_type = $this->getFieldType($_model_name, $_k);
+						if($_field_type) {
+							$_val = $this->escapeString($_v); // escape string
+							switch($_field_type) {
+								case 'decimal':
+								case 'numeric': 
+								case 'date':
+								case 'datetime':
+								case 'timestamp': 
+								case 'time':
+								case 'year': 
+								case 'char': 
+								case 'varchar': 
+								case 'tinyblob':
+								case 'tinytext':
+								case 'blob':
+								case 'text':
+								case 'mediumblob':
+								case 'mediumtext':
+								case 'longblob':
+								case 'longtext':
+								case 'enum': 
+								//case 'set':								
+									if(isset($_v)) {
+										$_fields = $_fields . $_k . ' = "' . $_val . '"';
+									}
+									break;
+									
+								case 'tinyint':
+								case 'smallint':
+								case 'mediumint':
+								case 'int':
+								case 'integer':
+								case 'bigint':
+								case 'float':
+								case 'double':
+								case 'double precision':
+								case 'real':
+									if(isset($_v)) {					
+										$_fields = $_fields . $_k . ' = ' . $_val;
+									}
+									break;
+									
+								default:
+									if(isset($_v)) {					
+										$_fields = $_fields . $_k . ' = ' . $_val;
+									}
+									break;
+									
+							} // end switch
+							
+							if ($_c > 0) {
+								$_fields = $_fields . ',';
+							}
+							
+						} // end field_type
+					} // end check $_k == 'id'
+					
+					$_c = $_c - 1;					
+					
+				} // end isExists				
+				
+			} // end foreach
 		
 		// construct SQL
 		$_sql = 'UPDATE ' . strtolower($_model_name);
