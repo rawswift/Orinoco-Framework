@@ -38,7 +38,9 @@ class Record extends Database {
 				} else if(is_array($_value) && $_value['primary']) {
 					$this->$_key->_is_primary = $_value['primary'];
 				}
+			
 			$this->$_key->_property_name = $_key; // field name
+			$this->$_key->_type = $this->getFieldType(get_class($this), $_key); // field type
 			
 			// check for enum fields
 			if(preg_match('(enum)', $this->getFieldType(get_class($this), $_key))) {
@@ -91,6 +93,9 @@ class Record extends Database {
 			 */
 			$_properties = $_param; // assumes $_param is an array
 		} else {
+			/**
+			 * @todo this might cause an error some time in the future? so it's safer to pass array as a parameter instead of relying on current model/field value
+			 */
 			$_properties = get_object_vars($this->_this_model);
 		}
 		
@@ -102,7 +107,7 @@ class Record extends Database {
 					
 					if(isset($_v)) {
 						if(!$this->isAutoIncrement($_model_name, $_k)) {
-							$_field_type = $this->getFieldType($_model_name, $_k);
+							$_field_type = $this->_this_model->$_k->_type;
 							if($_field_type) {
 								$_fields = $_fields . $_k;
 								$_val = $this->escapeString($_v); // escape string
@@ -182,6 +187,123 @@ class Record extends Database {
 		
 		return $this->getLastQueryID(); // return ID generated in the last query
 	}	
+
+	/**
+	 * update model record
+	 *
+	 * @param int|array $_param accepts id or array {condition, order, limit} clause
+	 * @param bool $_debug set true if you want to see the generated SQL statement
+	 * @return bool true if query is successful, otherwise false
+	 */
+	public function update($_param = NULL, $_debug = false) {
+	
+		$_model_name = get_class($this); // get model name
+		$_fields = '';
+
+		if(isset($_param)) {
+			/**
+			 * @todo should check if $_param is an array else return false
+			 */
+			$_properties = $_param; // assumes $_param is an array
+		} else {
+			/**
+			 * @todo this might cause an error some time in the future? so it's safer to pass array as a parameter instead of relying on current model/field value
+			 */
+			$_properties = get_object_vars($this->_this_model);		
+		}
+		
+		$_c = count($_properties) - 1;
+			foreach($_properties as $_k => $_v) {
+
+				if ($this->isExists($_model_name, $_k)) {
+					
+					if(!($_k == 'id')) {
+						$_field_type = $this->_this_model->$_k->_type;
+						if($_field_type) {
+							$_val = $this->escapeString($_v); // escape string
+							switch($_field_type) {
+								case 'decimal':
+								case 'numeric': 
+								case 'date':
+								case 'datetime':
+								case 'timestamp': 
+								case 'time':
+								case 'year': 
+								case 'char': 
+								case 'varchar': 
+								case 'tinyblob':
+								case 'tinytext':
+								case 'blob':
+								case 'text':
+								case 'mediumblob':
+								case 'mediumtext':
+								case 'longblob':
+								case 'longtext':
+								case 'enum': 
+								//case 'set':								
+									if(isset($_v)) {
+										$_fields = $_fields . $_k . ' = "' . $_val . '"';
+									}
+									break;
+									
+								case 'tinyint':
+								case 'smallint':
+								case 'mediumint':
+								case 'int':
+								case 'integer':
+								case 'bigint':
+								case 'float':
+								case 'double':
+								case 'double precision':
+								case 'real':
+									if(isset($_v)) {					
+										$_fields = $_fields . $_k . ' = ' . $_val;
+									}
+									break;
+									
+								default:
+									if(isset($_v)) {					
+										$_fields = $_fields . $_k . ' = ' . $_val;
+									}
+									break;
+									
+							} // end switch
+							
+							if ($_c > 0) {
+								$_fields = $_fields . ',';
+							}
+							
+						} // end field_type
+					} // end check $_k == 'id'
+					
+					$_c = $_c - 1;					
+					
+				} // end isExists				
+				
+			} // end foreach
+		
+		// construct SQL
+		$_sql = 'UPDATE ' . strtolower($_model_name);
+		$_sql = $_sql . ' SET ';
+		$_sql = $_sql . trim($_fields, ',');
+		
+		/**
+		 * @todo must not be dependent on ID; $this->id->_value
+		 */
+		$_sql = $_sql . ' WHERE ' . $this->getPrimaryKey() . ' = ' . $this->id->_value . ';';
+		
+		// if debug is on then show SQL statement and terminate
+		if($_debug) {
+			print_r($_sql);
+			exit(0);
+		}
+		
+		// do query
+		if(!$this->rawQuery($_sql)) {
+			return false;
+		}
+		return true;
+	}
 	
 	/**
 	 * find records w/ multiple table join support
@@ -326,119 +448,6 @@ class Record extends Database {
 			$this->$_key->_model_name = strtolower($_model_name);
 			//$this->$_key->_current_controller = $_route->_controller; // Nov 12, 2010 @todo do we need to set a value?
 			$this->$_key->_record_id = $_res->id;
-		}
-		return true;
-	}
-	
-	/**
-	 * update model record
-	 *
-	 * @param int|array $_param accepts id or array {condition, order, limit} clause
-	 * @param bool $_debug set true if you want to see the generated SQL statement
-	 * @return bool true if query is successful, otherwise false
-	 */
-	public function update($_param = NULL, $_debug = false) {
-	
-		$_model_name = get_class($this); // get model name
-		$_fields = '';
-
-		if(isset($_param)) {
-			/**
-			 * @todo should check if $_param is an array else return false
-			 */
-			$_properties = $_param; // assumes $_param is an array
-		} else {
-			$_properties = get_object_vars($this->_this_model);		
-		}
-		
-		$_c = count($_properties) - 1;
-			foreach($_properties as $_k => $_v) {
-
-				if ($this->isExists($_model_name, $_k)) {
-					
-					if(!($_k == 'id')) {
-						$_field_type = $this->getFieldType($_model_name, $_k);
-						if($_field_type) {
-							$_val = $this->escapeString($_v); // escape string
-							switch($_field_type) {
-								case 'decimal':
-								case 'numeric': 
-								case 'date':
-								case 'datetime':
-								case 'timestamp': 
-								case 'time':
-								case 'year': 
-								case 'char': 
-								case 'varchar': 
-								case 'tinyblob':
-								case 'tinytext':
-								case 'blob':
-								case 'text':
-								case 'mediumblob':
-								case 'mediumtext':
-								case 'longblob':
-								case 'longtext':
-								case 'enum': 
-								//case 'set':								
-									if(isset($_v)) {
-										$_fields = $_fields . $_k . ' = "' . $_val . '"';
-									}
-									break;
-									
-								case 'tinyint':
-								case 'smallint':
-								case 'mediumint':
-								case 'int':
-								case 'integer':
-								case 'bigint':
-								case 'float':
-								case 'double':
-								case 'double precision':
-								case 'real':
-									if(isset($_v)) {					
-										$_fields = $_fields . $_k . ' = ' . $_val;
-									}
-									break;
-									
-								default:
-									if(isset($_v)) {					
-										$_fields = $_fields . $_k . ' = ' . $_val;
-									}
-									break;
-									
-							} // end switch
-							
-							if ($_c > 0) {
-								$_fields = $_fields . ',';
-							}
-							
-						} // end field_type
-					} // end check $_k == 'id'
-					
-					$_c = $_c - 1;					
-					
-				} // end isExists				
-				
-			} // end foreach
-		
-		// construct SQL
-		$_sql = 'UPDATE ' . strtolower($_model_name);
-		$_sql = $_sql . ' SET ';
-		$_sql = $_sql . $_fields;
-		/**
-		 * @todo must not be dependent on ID; $this->id->_value
-		 */
-		$_sql = $_sql . ' WHERE ' . $this->getPrimaryKey() . ' = ' . $this->id->_value . ';';
-		
-		// if debug is on then show SQL statement and terminate
-		if($_debug) {
-			print_r($_sql);
-			exit(0);
-		}
-		
-		// do query
-		if(!$this->rawQuery($_sql)) {
-			return false;
 		}
 		return true;
 	}
