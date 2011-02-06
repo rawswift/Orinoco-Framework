@@ -9,7 +9,9 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-class coreView {
+require('helper.core.php'); // require framework layer helper
+
+class coreView extends coreHelper {
 
 	/**
 	 * render controllers/methods view template

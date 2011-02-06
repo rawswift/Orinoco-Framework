@@ -9,25 +9,8 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-class Helper {
+class coreHelper {
 
-	public function __construct() {
-		// do something useful here?
-	}
-	
-	/**
-	 * return JSON encoded data
-	 * @param $_data array
-	 * @return none
-	 */
-	public function JSONResponse($_data) {
-		$JSON_encoded = json_encode($_data);
-		header("Content-Length: " . strlen($JSON_encoded));
-		header("Content-type: application/json;");
-		echo $JSON_encoded;
-		exit(0);
-	}
-	
 	/**
      * print an array
      *
@@ -37,7 +20,7 @@ class Helper {
     	echo '<pre>';
         print_r($_arr);
         echo '</pre>';          
-	}	
+	}
 	
 } // end class
 
