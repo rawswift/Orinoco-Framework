@@ -140,6 +140,8 @@ class Router {
 								self::$_controller = DEFAULT_CONTROLLER;
 							} else if($_v == 'CURRENT') {
 								self::$_controller = $_route_map[0];
+							} else {
+								self::$_controller = $_v;
 							}
 							break;
 						case 'action':
@@ -147,6 +149,8 @@ class Router {
 								self::$_action = DEFAULT_ACTION;
 							} else if($_v == 'CURRENT') {
 								self::$_action = $_route_map[1];
+							} else {
+								self::$_action = $_v;
 							}
 							break;
 						case 'id':

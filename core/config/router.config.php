@@ -29,16 +29,18 @@
  */
 
 $_default_routes = array(
-	
+
 	/**
-	 * index/root (e.g. http://www.domain.tld/)
+	 * [/year/month/day/blog-style-url/] or [/year/month/day/blog-style-url]
+	 * 
+	 * NOTE: change the 'your_blog_controller_here' to your actual controller that will handle this URI request
 	 */
-		'(^\/$)' 
+		'(^\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+\/|\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+$)' 
 				=>		array(
-								'controller' => 'DEFAULT',
+								'controller' => 'your_blog_controller_here', // blog controller here
 								'action' => 'DEFAULT',
 							),
-						
+
 	/**
 	 * [/controller/action/id/] or [/controller/action/id] 
 	 */
@@ -78,15 +80,13 @@ $_default_routes = array(
 							),
 	
 	/**
-	 * [/year/month/day/blog-style-url/] or [/year/month/day/blog-style-url]
-	 * 
-	 * NOTE: change the 'your_blog_controller_here' to your actual controller that will handle this URI request
+	 * index/root (e.g. http://www.domain.tld/)
 	 */
-		'(^\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+\/|\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+$)' 
+		'(^\/$)' 
 				=>		array(
-								'controller' => 'your_blog_controller_here', // blog controller here
+								'controller' => 'DEFAULT',
 								'action' => 'DEFAULT',
-							),
+							)
 	
 	); // end array config
 
