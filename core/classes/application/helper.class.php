@@ -35,8 +35,8 @@ class Helper {
 	 * @return string permalink format
 	 */
 	public function permalink($_string) {
-		$_patterns = array('(-)', '(\')', '( )');
-		$_replacements = array(';', '+', '-');
+		$_patterns = array('(-)', '(\')', '( )', '(\.)');
+		$_replacements = array(';', '+', '-', '_');
 		return preg_replace($_patterns, $_replacements, strtolower($_string));
 	}	
 	
@@ -47,8 +47,8 @@ class Helper {
 	 * @return permalink format to human string
 	 */
 	public function unpermalink($_string) {
-		$_patterns = array('(;)', '(\+)', '(-)');
-		$_replacements = array('-', '\'', ' ');
+		$_patterns = array('(\+)', '(-)', '(_)', '(;)');
+		$_replacements = array('\'', ' ', '.', '-');
 		return preg_replace($_patterns, $_replacements, $_string);
 	}	
 	

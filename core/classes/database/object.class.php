@@ -94,10 +94,10 @@ class recordObject {
 	 * @return string permalink format
 	 */
 	public function to_permalink() {
-		$_patterns = array('(-)', '(\')', '( )');
-		$_replacements = array(';', '+', '-');
+		$_patterns = array('(-)', '(\')', '( )', '(\.)');
+		$_replacements = array(';', '+', '-', '_');
 		return preg_replace($_patterns, $_replacements, $this->_value);
-	}
+	}	
 	
 	/**
 	 * returns MD5 hash with salt option
