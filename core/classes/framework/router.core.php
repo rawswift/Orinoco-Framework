@@ -127,6 +127,16 @@ class Router {
 		return self::$_request;
 	}
 	
+	/**
+	 * Return an array map of URI
+	 */
+	public function mapURI() {
+		$_uri_split = preg_split("/\?/", self::$_request); // split
+		$_uri = $_uri_split[0]; // store the value for route comparison later
+		$_map = preg_split("/\//", $_uri, 0, PREG_SPLIT_NO_EMPTY); // get resources
+		return $_map;
+	}	
+	
 	public function matchDefaultRoutes($_original_uri, $_route_map) {
 		// iterate through default routes
 		foreach(self::$_default_routes as $_key => $_value) {
