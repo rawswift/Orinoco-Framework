@@ -35,7 +35,7 @@ $_default_routes = array(
 	 * 
 	 * NOTE: change the 'your_blog_controller_here' to your actual controller that will handle this URI request
 	 */
-		'(^\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+\/|\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\-]+$)' 
+		'(^\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\--\;-\+]+\/|\/+[0-9]+\/+[0-9]+\/+[0-9]+\/+[a-zA-Z0-9-\--\;-\+]+$)' 
 				=>		array(
 								'controller' => 'your_blog_controller_here', // blog controller here
 								'action' => 'DEFAULT',
