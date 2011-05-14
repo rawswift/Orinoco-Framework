@@ -29,6 +29,30 @@ class Helper {
 	}
 	
 	/**
+	 * returns current value to permalink or URI format
+	 *
+	 * @example foo bar --> foo-bar 
+	 * @return string permalink format
+	 */
+	public function permalink($_string) {
+		$_patterns = array('(-)', '(\')', '( )');
+		$_replacements = array(';', '+', '-');
+		return preg_replace($_patterns, $_replacements, strtolower($_string));
+	}	
+	
+	/**
+	 * return a human string from permalink type string
+	 *
+	 * @example foo-bar --> foo bar 
+	 * @return permalink format to human string
+	 */
+	public function unpermalink($_string) {
+		$_patterns = array('(;)', '(\+)', '(-)');
+		$_replacements = array('-', '\'', ' ');
+		return preg_replace($_patterns, $_replacements, $_string);
+	}	
+	
+	/**
      * print an array
      *
      * @param array $_arr array to print
