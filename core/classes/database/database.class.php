@@ -10,7 +10,9 @@
  */
 
 // get database config
-require(CONFIG_DIR . 'database.config.php');
+if (file_exists(CONFIG_DIR . 'database.config.php')) {
+	require(CONFIG_DIR . 'database.config.php');	
+}
 
 /**
  * Database - act as a front interface/wrapper for various database adapter
