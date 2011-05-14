@@ -9,44 +9,8 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 
-/**
- * autoload classes; magic method
- *
- * @param string $_class_name name of class to instantiate
- * @return true if class is found else throw a 404 error
- */
-function __autoload($_class_name) {
-	
-	// try model classes path
-	$_app_model_file = APPLICATION_DIR . MODEL_DIR;
-	$_model_path = $_app_model_file . strtolower($_class_name) . MODEL_FILE_SUFFIX . MODEL_FILE_EXTENSION;
-		if(file_exists($_model_path)){
-			require($_model_path);
-			return true;
-		}
-
-	// try adapter classes path
-	$_adapter_path = ADAPTER_DIR . strtolower($_class_name) . ADAPTER_FILE_SUFFIX . ADAPTER_FILE_EXTENSION;
-		if(file_exists($_adapter_path)){
-			require($_adapter_path);
-			return true;
-		}
-
-	// try extension classes path
-	$_extension_path = EXTENSION_DIR . strtolower($_class_name) . EXTENSION_FILE_SUFFIX . EXTENSION_FILE_EXTENSION;
-		if(file_exists($_extension_path)){
-			require($_extension_path);
-			return true;
-		}
-		
-	// @todo find a better error message especially on debug mode
-	header("HTTP/1.1 404 Not Found");
-	echo 'Model class "' . $_class_name . '" does not exists.';
-	exit();
-		
-} // end __autoload()
-
-require('helper.class.php');
+require('ofloader.class.php'); // autoloader class
+require('helper.class.php'); // basic helper class
 
 class Controller extends Helper {
 
