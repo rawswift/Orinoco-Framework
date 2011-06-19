@@ -135,6 +135,28 @@ class Router {
 		$_uri = $_uri_split[0]; // store the value for route comparison later
 		$_map = preg_split("/\//", $_uri, 0, PREG_SPLIT_NO_EMPTY); // get resources
 		return $_map;
+	}
+	
+	/**
+	 * Return an array map of GET parameter (in key/pair values)
+	 */
+	public function mapGET() {
+		$_uri_split = preg_split("/\?/", self::$_request); // split
+		
+		if (!isset($_uri_split[1])) {
+			return false;
+		}
+		
+		$_get = $_uri_split[1]; // we only need the GET data
+		$_get_arr = preg_split("/\&/", $_get, 0, PREG_SPLIT_NO_EMPTY); // split
+		
+		$_map = array(); // initialize an empty array
+		foreach ($_get_arr as $k => $v) {
+			$_split_val = preg_split("/\=/", $v, 0, PREG_SPLIT_NO_EMPTY); // split value for key/pair value
+			$_map[$_split_val[0]] = $_split_val[1];
+		}
+		
+		return $_map;
 	}	
 	
 	public function matchDefaultRoutes($_original_uri, $_route_map) {
