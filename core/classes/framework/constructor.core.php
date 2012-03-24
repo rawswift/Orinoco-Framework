@@ -3,7 +3,7 @@
  * Orinoco Framework - a lightweight MVC framework.
  * http://code.google.com/p/orinoco-framework/
  *  
- * Copyright (c) 2008-2011 Ryan Yonzon, http://ryan.rawswift.com/
+ * Copyright (c) 2008-2012 Ryan Yonzon, http://ryan.rawswift.com/
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
@@ -19,6 +19,7 @@ class coreConstructor extends coreController {
 	
 	protected $_controller;	// controller
 	protected $_action;	// action/method
+	protected $_class = null;	// controller class (explicit)
 	protected $_id = NULL; // ID (from URI)
 	
 	public function __construct($_route) {
@@ -28,10 +29,15 @@ class coreConstructor extends coreController {
 		if ($_route->hasID()) { // get ID if we have one
 			$this->_id = $_route->getID();
 		}
+
+		if ($_route->explicitClass()) { // class are explicitly specified
+			$this->_class = $_route->explicitClass();
+		}
 	}
 	
 	public function dispatch() {
 		if ($this->isControllerFileExists()) {
+			
 			require($this->getControllerFilePath());
 			
 			// create an object of the developer's controller class

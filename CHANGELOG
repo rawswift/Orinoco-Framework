@@ -1,3 +1,6 @@
+Version 1.0.2
+   - Add support to explicit controller class file path. - March 25, 2012
+   - Additional /libs path for auto class lookup. - March 25, 2012
 Version 1.0.1
    - Bug fix: Unable to get field type and field flag when table is empty. - January 17, 2010
    - Added 'redirect' public method on controller.class.php and changed __layout to layout. - December 15, 2010

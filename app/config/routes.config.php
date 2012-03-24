@@ -3,7 +3,7 @@
  * Orinoco Framework - a lightweight MVC framework.
  * http://code.google.com/p/orinoco-framework/
  *  
- * Copyright (c) 2008-2011 Ryan Yonzon, http://ryan.rawswift.com/
+ * Copyright (c) 2008-2012 Ryan Yonzon, http://ryan.rawswift.com/
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
@@ -22,3 +22,6 @@
 
 // test ORM controller
 //Router::add("/orm", array("controller" => "orm", "action" => "index"));
+
+// regular expression and controller path
+// Router::add("(^\/+[a-zA-Z0-9-\-]+\/test+$)", array("controller" => "test", "action" => "index", "class" => "/path/to/test.controller.php"));
