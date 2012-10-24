@@ -1,7 +1,7 @@
 <?php
 /**
  * Orinoco Framework - a lightweight MVC framework.
- * http://code.google.com/p/orinoco-framework/
+ * https://github.com/rawswift/Orinoco-Framework
  *  
  * Copyright (c) 2008-2012 Ryan Yonzon, http://ryan.rawswift.com/
  * Dual licensed under the MIT and GPL licenses:
@@ -26,92 +26,6 @@ class Router {
 	public function setDefaultRoutes($_default_routes) {
 		self::$_default_routes = $_default_routes;
 	}
-	
-	/**
-	 * The two(2) methods below are flaged as Deprecated
-	 * and is replaced by a two(2) new one
-	 */
-
-	/**
-	 * Deprecated
-	 */
-	/*
-	public function add($_uri, $_method_map) {
-		$_uri_split = preg_split("/\?/", $_uri); // split
-
-		$_uri = $_uri_split[0]; // store the value for route comparison later
-		$_map = preg_split("/\//", $_uri, 0, PREG_SPLIT_NO_EMPTY); // get resources
-		
-		if (!isset($_map[0])) {
-			self::$_route_table[DEFAULT_CONTROLLER][DEFAULT_ACTION] = $_method_map;
-		} else {	
-			if (!isset($_map[1])) {
-				self::$_route_table[$_map[0]][DEFAULT_ACTION] = $_method_map;
-			} else {
-				self::$_route_table[$_map[0]][$_map[1]] = $_method_map;
-			} 
-		}
-	}
-	*/
-	
-	/**
-	 * Deprecated
-	 */	
-	/*
-	public function getController() {
-		if (isset(self::$_controller)) { // check if we already have a controller
-			return self::$_controller; // return current controller
-		} else { // else process controller and action request
-			$_split = preg_split("/\?/", self::$_request); // split request
-			$_uri = $_split[0];
-			$_map = preg_split("/\//", $_uri, 0, PREG_SPLIT_NO_EMPTY);
-			
-			if (!isset($_map[0])) { // check if this is index URI (e.g. http://sub.domain.tld/)
-				if (isset(self::$_route_table[DEFAULT_CONTROLLER])) { // check if we have an default controller (e.g. index) on the route table
-					$_request = self::$_route_table[DEFAULT_CONTROLLER][DEFAULT_ACTION];
-					self::$_controller = $_request["controller"];
-					self::$_action = $_request["action"];
-				} else { // we don't have a default resource, send a 404 header error
-					if (!self::matchDefaultRoutes($_uri, $_map)) { // check if we'll have a match using our default route rules
-						// @todo find a better error message especially on debug mode
-						header("HTTP/1.1 404 Not Found");
-						echo 'Router Error: Controller "' . DEFAULT_CONTROLLER . '" Not Found.';
-						exit();
-					}
-				}
-			} else { // No, we are not index URI
-				if (!isset($_map[1])) { // check that we don't have an action/method on URI (e.g. /controller/action-name)
-					if (!isset(self::$_route_table[$_map[0]][DEFAULT_ACTION])) { // check for default action/method (e.g. index)
-						if (!self::matchDefaultRoutes($_uri, $_map)) { // check if we'll have a match using our default route rules
-							// @todo find a better error message especially on debug mode
-							header("HTTP/1.1 404 Not Found");
-							echo 'Router Error: Controller "' . $_map[0] . '" Not Found.';
-							exit();
-						}
-					} else { // Yes, there is a default service (e.g. index)
-						$_request = self::$_route_table[$_map[0]][DEFAULT_ACTION];
-						self::$_controller = $_request["controller"];
-						self::$_action = $_request["action"];
-					}
-				} else { // we have an action/method (e.g. /controller/action-name)
-					if (!isset(self::$_route_table[$_map[0]][$_map[1]])) { // check if don't have a action/method request on route table
-						if (!self::matchDefaultRoutes($_uri, $_map)) { // check if we'll have a match using our default route rules
-							// @todo find a better error message especially on debug mode
-							header("HTTP/1.1 404 Not Found");
-							echo 'Router Error: Action "' . $_map[1] . '" Not Found.';
-							exit();
-						}
-					} else { // Yes, we do have an action/method request!
-						$_request = self::$_route_table[$_map[0]][$_map[1]];
-						self::$_controller = $_request["controller"];
-						self::$_action = $_request["action"];
-					}					
-				} 
-			}			
-			return self::$_controller; // return controller name
-		}
-	}
-	*/
 
 	public function add($_uri, $_method_map) {
 		self::$_route_table[trim($_uri)] = $_method_map;

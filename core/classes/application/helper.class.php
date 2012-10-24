@@ -1,7 +1,7 @@
 <?php
 /**
  * Orinoco Framework - a lightweight MVC framework.
- * http://code.google.com/p/orinoco-framework/
+ * https://github.com/rawswift/Orinoco-Framework
  *  
  * Copyright (c) 2008-2012 Ryan Yonzon, http://ryan.rawswift.com/
  * Dual licensed under the MIT and GPL licenses:
